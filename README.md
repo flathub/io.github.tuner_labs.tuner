@@ -21,7 +21,6 @@ Flathub Manifest and build information for *io.github.tuner_labs.tuner*
 #### Modules
 
 - libgee 0.20.8
-- granite 6.2.0
 
 ## Process
 
