@@ -16,7 +16,7 @@ Flathub Manifest and build information for *io.github.tuner_labs.tuner*
 
 #### Platform
 
-- org.freedesktop.Platform_ latest version is 25.08
+- org.freedesktop.Platform_ latest version is 26.08
 
 #### Modules
 
