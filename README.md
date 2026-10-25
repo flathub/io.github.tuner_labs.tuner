@@ -16,12 +16,11 @@ Flathub Manifest and build information for *io.github.tuner_labs.tuner*
 
 #### Platform
 
-- org.freedesktop.Platform_ latest version is 25.08
+- org.freedesktop.Platform_ latest version is 26.08
 
 #### Modules
 
 - libgee 0.20.8
-- granite 6.2.0
 
 ## Process
 
@@ -48,6 +47,15 @@ flatpak run --command=flatpak-builder-lint org.flatpak.Builder repo repo
 Linting results are documented  at <https://docs.flathub.org/linter>
 
 ## History
+
+### 2.2.0
+
+- granite 6.2.0 dep removed
+- org.freedesktop.Platform updated to 26.08
+
+### 2.1.1
+
+- Added Adawaita-dark extension
 
 ### 2.0.3
 
