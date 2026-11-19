@@ -68,7 +68,7 @@ modules:
     sources:
       - type: git
         url: https://github.com/technosf/tuner-gtk4.git
-        commit: c07a674ffa67657da28add12051978670c1728e2
+        commit: 62e9297e504fd9f7df79c3ec1b93c50e3f292ec8
       - type: git
         # The core this build uses (the app reports it in its About box)
         url: https://github.com/technosf/tuner-core.git

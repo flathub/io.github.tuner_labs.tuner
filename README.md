@@ -54,7 +54,7 @@ Flathub can only fetch commits that are pushed. In *io.github.tuner_labs.tuner.y
 Before checking in, test the app build and lint:
 
 ``` bash
-flatpak run org.flatpak.Builder --force-clean --sandbox --user --install --install-deps-from=flathub --ccache --repo=repo builddir io.github.tuner_labs.tuner.yml
+flatpak run org.flatpak.Builder --force-clean --sandbox --user --install --install-deps-from=flathub --ccache --compose-url-policy=full --mirror-screenshots-url=https://dl.flathub.org/media --repo=repo builddir io.github.tuner_labs.tuner.yml
 
 flatpak run --command=flatpak-builder-lint org.flatpak.Builder manifest io.github.tuner_labs.tuner.yml
 
