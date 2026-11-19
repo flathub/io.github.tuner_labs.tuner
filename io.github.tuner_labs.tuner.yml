@@ -3,33 +3,30 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
+# Flathub manifest (beta branch of the fork): builds the technosf forks of tuner-gtk4 and tuner-core, each pinned to an exact
+# commit. Flathub builds offline, so the core is a source placed in subprojects/tuner-core, not a meson wrap.
+# This is flatpak/io.github.tuner_labs.tuner.yml of tuner-gtk4 with the sources filled in; to update, change the two commits.
 ---
 app-id: io.github.tuner_labs.tuner
-
-command: io.github.tuner_labs.tuner
-
-runtime: org.freedesktop.Platform
-runtime-version: '26.08'
-
-
-sdk: org.freedesktop.Sdk
+runtime: org.gnome.Platform
+runtime-version: '51'
+sdk: org.gnome.Sdk
 sdk-extensions:
   - org.freedesktop.Sdk.Extension.vala
-
+command: tuner-gtk4
 
 build-options:
   prepend-path: /usr/lib/sdk/vala/bin/
   prepend-ld-library-path: /usr/lib/sdk/vala/lib
 
-
 finish-args:
   - --share=ipc
   - --socket=fallback-x11
   - --socket=wayland
+  - --device=dri # GPU rendering (without it Mesa logs errors and GTK draws in software)
   - --share=network
   - --socket=pulseaudio
   - --filesystem=xdg-desktop # Playlist import export
-
 
 cleanup:
   - /include
@@ -38,27 +35,42 @@ cleanup:
   - /share/gir-1.0
   - /share/vala
   - "*.la"
-  - "*.a"  
-  
+  - "*.a"
 
 modules:
+  - name: libgee
+    buildsystem: autotools
+    build-options:
+      cflags: -Wno-error=incompatible-pointer-types
+    sources:
+      - type: archive
+        url: https://download.gnome.org/sources/libgee/0.20/libgee-0.20.8.tar.xz
+        sha256: 189815ac143d89867193b0c52b7dc31f3aa108a15f04d6b5dca2b6adfad0b0ee
 
-- name: libgee
-  buildsystem: autotools
-  build-options:
-    cflags: -Wno-error=incompatible-pointer-types
-  sources:
-    - type: archive
-      url: https://download.gnome.org/sources/libgee/0.20/libgee-0.20.8.tar.xz
-      sha256: 189815ac143d89867193b0c52b7dc31f3aa108a15f04d6b5dca2b6adfad0b0ee
+  - name: libqrencode
+    # Same source as the freedesktop-sdk libqrencode.bst; no command-line tool, no tests
+    buildsystem: autotools
+    config-opts:
+      - --without-tools
+      - --without-tests
+    sources:
+      - type: git
+        url: https://github.com/fukuchi/libqrencode.git
+        tag: v4.1.1
+        commit: 715e29fd4cd71b6e452ae0f4e36d917b43122ce8
 
-- name: tuner
-  buildsystem: meson
-  config-opts:
-    - --buildtype=release
-  sources:
-    - type: git
-      url: https://github.com/tuner-labs/tuner.git
-      tag: v2.2.0-beta.3
-      commit: 2b5fc3737d8e81924212d084f6070021089fd1e7
-      
+  - name: tuner-gtk4
+    buildsystem: meson
+    config-opts:
+      - --buildtype=release
+      - -Dpackaging=flatpak
+      - -Dapp_id=io.github.tuner_labs.tuner
+    sources:
+      - type: git
+        url: https://github.com/technosf/tuner-gtk4.git
+        commit: 62e9297e504fd9f7df79c3ec1b93c50e3f292ec8
+      - type: git
+        # The core this build uses (the app reports it in its About box)
+        url: https://github.com/technosf/tuner-core.git
+        commit: 7f00a7a882be0e8bbacc046456714274d7cb8160
+        dest: subprojects/tuner-core
